@@ -20,8 +20,19 @@ public class Employee {
 
     private String empLastName;
 
+    private String companyName;
+
     @OneToMany(cascade = CascadeType.ALL)
     private List<Address> address;
+
+
+    public String getCompanyName() {
+        return companyName;
+    }
+
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName;
+    }
 
     public Integer getEmpId() {
         return empId;

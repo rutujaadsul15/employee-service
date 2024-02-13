@@ -1,9 +1,12 @@
 package com.employee.controller;
 
+import com.employee.model.CompanyDTO;
 import com.employee.model.Employee;
 import com.employee.model.request.EmployeeRequest;
+import com.employee.model.request.EmployeeResponse;
 import com.employee.service.EmployeeServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -26,4 +29,19 @@ public class EmployeeController {
     public Employee getEmployeeByRequestParam(@RequestParam("id") Integer id){
         return employeeService.getEmployee(id);
     }
-}
+
+    @PutMapping("/updateEmployee/{id}")
+    public Employee updateEmployee(@PathVariable("id") Integer id, @RequestBody Employee employee){
+        return employeeService.updateEmployee(id,employee);
+    }
+
+        @GetMapping("/getEmployeeDetails/{id}")
+    public ResponseEntity<EmployeeResponse> getEmployeeByName(@PathVariable Integer id) {
+        EmployeeResponse employeeResponseDTO = employeeService.getEmployeeById(id);
+        if (employeeResponseDTO != null) {
+            return ResponseEntity.ok(employeeResponseDTO);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+    }
