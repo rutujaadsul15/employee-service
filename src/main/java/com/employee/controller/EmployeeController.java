@@ -1,5 +1,6 @@
 package com.employee.controller;
 
+import com.employee.CustomException.NoCompanyExistException;
 import com.employee.model.CompanyDTO;
 import com.employee.model.Employee;
 import com.employee.model.request.EmployeeRequest;
@@ -22,20 +23,21 @@ public class EmployeeController {
     }
 
     @GetMapping("/getEmployee/{id}")
-    public Employee getEmployeeByPathVariable( @PathVariable Integer id){
+    public Employee getEmployeeByPathVariable(@PathVariable Integer id) {
         return employeeService.getEmployee(id);
     }
+
     @GetMapping("/getEmployee")
-    public Employee getEmployeeByRequestParam(@RequestParam("id") Integer id){
+    public Employee getEmployeeByRequestParam(@RequestParam("id") Integer id) {
         return employeeService.getEmployee(id);
     }
 
     @PutMapping("/updateEmployee/{id}")
-    public Employee updateEmployee(@PathVariable("id") Integer id, @RequestBody Employee employee){
-        return employeeService.updateEmployee(id,employee);
+    public Employee updateEmployee(@PathVariable("id") Integer id, @RequestBody Employee employee) {
+        return employeeService.updateEmployee(id, employee);
     }
 
-        @GetMapping("/getEmployeeDetails/{id}")
+    @GetMapping("/getEmployeeDetails/{id}")
     public ResponseEntity<EmployeeResponse> getEmployeeByName(@PathVariable Integer id) {
         EmployeeResponse employeeResponseDTO = employeeService.getEmployeeById(id);
         if (employeeResponseDTO != null) {
@@ -44,4 +46,4 @@ public class EmployeeController {
             return ResponseEntity.notFound().build();
         }
     }
-    }
+}

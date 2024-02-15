@@ -1,5 +1,6 @@
 package com.employee.service;
 
+import com.employee.CustomException.NoCompanyExistException;
 import com.employee.model.Address;
 import com.employee.model.CompanyDTO;
 import com.employee.model.Employee;
@@ -25,8 +26,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final RestTemplate restTemplate;
 
     @Autowired
-    public EmployeeServiceImpl(RestTemplate restTemplate){
-        this.restTemplate=restTemplate;
+    public EmployeeServiceImpl(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
     public void saveEmployee(EmployeeRequest employeeRequest) {
@@ -74,7 +75,9 @@ public class EmployeeServiceImpl implements EmployeeService {
             String companyServiceUrl = "http://localhost:8083/company/getCompany/" + employee.getCompanyName();
 
             CompanyDTO companyDTO = restTemplate.getForObject(companyServiceUrl, CompanyDTO.class);
-
+            if (companyDTO == null) {
+                throw new NoCompanyExistException("No company found  with this name " + employee.getCompanyName());
+            }
             // Create EmployeeResponseDTO object with employee and company details
             EmployeeResponse employeeResponse = new EmployeeResponse();
             employeeResponse.setEmpId(employee.getEmpId());
