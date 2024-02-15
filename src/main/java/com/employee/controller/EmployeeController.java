@@ -1,5 +1,6 @@
 package com.employee.controller;
 
+import com.employee.CustomException.NoCompanyExistException;
 import com.employee.model.CompanyDTO;
 import com.employee.model.Employee;
 import com.employee.model.request.EmployeeRequest;
@@ -34,9 +35,8 @@ public class EmployeeController {
     public Employee updateEmployee(@PathVariable("id") Integer id, @RequestBody Employee employee){
         return employeeService.updateEmployee(id,employee);
     }
-
-        @GetMapping("/getEmployeeDetails/{id}")
-    public ResponseEntity<EmployeeResponse> getEmployeeByName(@PathVariable Integer id) {
+    @GetMapping("/getEmployeeDetails/{id}")
+    public ResponseEntity<EmployeeResponse> getEmployeeByName(@PathVariable Integer id) throws NoCompanyExistException {
         EmployeeResponse employeeResponseDTO = employeeService.getEmployeeById(id);
         if (employeeResponseDTO != null) {
             return ResponseEntity.ok(employeeResponseDTO);

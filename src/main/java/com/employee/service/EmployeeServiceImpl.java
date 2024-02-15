@@ -1,5 +1,6 @@
 package com.employee.service;
 
+import com.employee.CustomException.NoCompanyExistException;
 import com.employee.model.Address;
 import com.employee.model.CompanyDTO;
 import com.employee.model.Employee;
@@ -67,14 +68,16 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeResponse getEmployeeById(Integer id) {
+    public EmployeeResponse getEmployeeById(Integer id) throws NoCompanyExistException {
         Employee employee = employeeRepository.findById(id).orElse(null);
         if (employee != null) {
             // Call company microservice to get company details
             String companyServiceUrl = "http://localhost:8083/company/getCompany/" + employee.getCompanyName();
 
             CompanyDTO companyDTO = restTemplate.getForObject(companyServiceUrl, CompanyDTO.class);
-
+            if(companyDTO==null){
+                throw new NoCompanyExistException("No company found  with this name " +employee.getCompanyName());
+            }
             // Create EmployeeResponseDTO object with employee and company details
             EmployeeResponse employeeResponse = new EmployeeResponse();
             employeeResponse.setEmpId(employee.getEmpId());
