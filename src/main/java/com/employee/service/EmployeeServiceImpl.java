@@ -26,8 +26,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     private final RestTemplate restTemplate;
 
     @Autowired
-    public EmployeeServiceImpl(RestTemplate restTemplate){
-        this.restTemplate=restTemplate;
+    public EmployeeServiceImpl(RestTemplate restTemplate) {
+        this.restTemplate = restTemplate;
     }
 
     public void saveEmployee(EmployeeRequest employeeRequest) {
@@ -68,15 +68,15 @@ public class EmployeeServiceImpl implements EmployeeService {
     }
 
     @Override
-    public EmployeeResponse getEmployeeById(Integer id) throws NoCompanyExistException {
+    public EmployeeResponse getEmployeeById(Integer id) {
         Employee employee = employeeRepository.findById(id).orElse(null);
         if (employee != null) {
             // Call company microservice to get company details
             String companyServiceUrl = "http://localhost:8083/company/getCompany/" + employee.getCompanyName();
 
             CompanyDTO companyDTO = restTemplate.getForObject(companyServiceUrl, CompanyDTO.class);
-            if(companyDTO==null){
-                throw new NoCompanyExistException("No company found  with this name " +employee.getCompanyName());
+            if (companyDTO == null) {
+                throw new NoCompanyExistException("No company found  with this name " + employee.getCompanyName());
             }
             // Create EmployeeResponseDTO object with employee and company details
             EmployeeResponse employeeResponse = new EmployeeResponse();

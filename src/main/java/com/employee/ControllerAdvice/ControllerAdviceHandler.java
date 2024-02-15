@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class ControllerAdviceHandler {
 
     @ExceptionHandler(NoCompanyExistException.class)
-    public ResponseEntity<Object> handleNoCompanyException(NoCompanyExistException e){
-    return ResponseEntity.notFound().build();
+    public ResponseEntity<Object> handleNoCompanyException(NoCompanyExistException e) {
+        return ResponseEntity.badRequest().body(e.getMessage());
     }
 }
