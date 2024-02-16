@@ -10,15 +10,19 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.logging.Logger;
+
 @RestController
 @RequestMapping("/employee")
 public class EmployeeController {
 
+    private static final Logger LOGGER = Logger.getLogger(EmployeeController.class.getName());
     @Autowired
     private EmployeeServiceImpl employeeService;
 
     @PostMapping("/saveEmployee")
     public void saveEmployee(@RequestBody EmployeeRequest employeeRequest) {
+        LOGGER.info("Employee Request saved");
         employeeService.saveEmployee(employeeRequest);
     }
 
@@ -34,6 +38,7 @@ public class EmployeeController {
 
     @PutMapping("/updateEmployee/{id}")
     public Employee updateEmployee(@PathVariable("id") Integer id, @RequestBody Employee employee) {
+        LOGGER.info("Employee updated with patch mapping" + employee);
         return employeeService.updateEmployee(id, employee);
     }
 

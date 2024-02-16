@@ -1,6 +1,7 @@
 package com.employee.service;
 
 import com.employee.CustomException.NoCompanyExistException;
+import com.employee.controller.EmployeeController;
 import com.employee.model.Address;
 import com.employee.model.CompanyDTO;
 import com.employee.model.Employee;
@@ -16,10 +17,12 @@ import org.springframework.web.client.RestTemplate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 
 @Service
 public class EmployeeServiceImpl implements EmployeeService {
 
+    private static final Logger LOGGER = Logger.getLogger(EmployeeServiceImpl.class.getName());
     @Autowired
     private EmployeeRepository employeeRepository;
 
@@ -76,7 +79,10 @@ public class EmployeeServiceImpl implements EmployeeService {
 
             CompanyDTO companyDTO = restTemplate.getForObject(companyServiceUrl, CompanyDTO.class);
             if (companyDTO == null) {
+                LOGGER.warning("No company found  with this name " + employee.getCompanyName());
                 throw new NoCompanyExistException("No company found  with this name " + employee.getCompanyName());
+
+
             }
             // Create EmployeeResponseDTO object with employee and company details
             EmployeeResponse employeeResponse = new EmployeeResponse();
