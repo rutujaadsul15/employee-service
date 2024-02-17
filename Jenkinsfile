@@ -35,17 +35,17 @@ pipeline {
                      def username = 'root'
                      def password = 'VZs@makh8Z#Ge'
                      def serverAddress = '103.171.181.190'
+                     def jarFilePath = 'C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\spring-jenkins\\target\\employee-service-0.0.1-SNAPSHOT.jar'
+                     def destinationPath = '/home/pickmyparcel/public_html/backend'
 
-                     // Connect to Linux server using SSH with password
-                     sh "sshpass -p '${password}' ssh -o StrictHostKeyChecking=no ${username}@${serverAddress}"
+                     // Copy JAR from Jenkins workspace to Linux server using plink and pscp
+                     sh "echo y | plink.exe -ssh -pw ${password} ${username}@${serverAddress} pscp.exe -pw ${password} ${jarFilePath} ${username}@${serverAddress}:${destinationPath}"
 
-                     // Copy JAR from Jenkins workspace to Linux server
-                     sh "sshpass -p '${password}' scp -o StrictHostKeyChecking=no C:\\ProgramData\\Jenkins\\.jenkins\\workspace\\spring-jenkins\\target\\employee-service-0.0.1-SNAPSHOT.jar ${username}@${serverAddress}:/home/pickmyparcel/public_html/backend"
-
-                     // Run JAR on Linux server
-                     //sh "sshpass -p '${password}' ssh -o StrictHostKeyChecking=no ${username}@${serverAddress} 'java -jar /home/pickmyparcel/public_html/backend/employee-service-0.0.1-SNAPSHOT.jar'"
+                     // Run JAR on Linux server using plink
+                     // Add the command to run the JAR on the server if needed
+                     // sh "echo y | plink.exe -ssh -pw ${password} ${username}@${serverAddress} java -jar ${destinationPath}/employee-service-0.0.1-SNAPSHOT.jar"
                  }
              }
-      }
+         }
 	}
 }
