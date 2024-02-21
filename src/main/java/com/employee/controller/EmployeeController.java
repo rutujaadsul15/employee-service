@@ -1,7 +1,4 @@
 package com.employee.controller;
-
-import com.employee.CustomException.NoCompanyExistException;
-import com.employee.model.CompanyDTO;
 import com.employee.model.Employee;
 import com.employee.model.request.EmployeeRequest;
 import com.employee.model.request.EmployeeResponse;
